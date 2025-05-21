@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
+import { GitHubRepo } from '../models';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'RepoDetail'>;
+type RepoDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'RepoDetail'>;
 
-const RepoDetailScreen: React.FC<Props> = ({ route }) => {
+const RepoDetailScreen: React.FC<RepoDetailScreenProps> = ({ route }) => {
   const { repo } = route.params;
 
   return (
