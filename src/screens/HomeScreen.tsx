@@ -12,7 +12,7 @@ import {
 import { GitHubAPIManager } from '@managers/GitHubAPIManager';
 import { GitHubRepo, GitHubIssue, GitHubPR, GitHubCode } from '@models/index';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -103,10 +103,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     setLoadingMore(false);
   }, [query, searchType, loadingMore, hasMore, loading, page, executeSearch, PER_PAGE]);
 
-
   useEffect(() => {
+    // When searchType changes (e.g. user clicks 'Issues', 'PRs' etc.),
+    // automatically perform a search using the current query text.
+    // handleSearch function already contains the logic to check query validity
+    // for the new searchType and clear results if not valid.
     handleSearch();
-  }, [query, searchType, handleSearch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+  }, [searchType]); // Intentionally only depending on searchType here.
 
   const renderItem = ({ item }: { item: GitHubRepo | GitHubIssue | GitHubPR | GitHubCode }) => {
     let title = '';
@@ -117,20 +121,38 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       title = item.full_name;
       detail = item.description;
       tappable = true;
-    } else if ('title' in item) { // GitHubIssue or GitHubPR
+    } else if ('title' in item && 'pull_request' in item) { // GitHubIssue (check for pull_request to differentiate from PRs if PRs also have 'title')
       title = item.title;
       detail = `#${item.number} opened by ${item.user.login} | State: ${item.state}`;
+      tappable = true;
+    } else if ('title' in item && 'merged_at' in item) { // GitHubPR (assuming 'merged_at' is a distinguishing PR field, or use another specific PR field)
+      title = item.title;
+      detail = `#${item.number} opened by ${item.user.login} | State: ${item.state}`;
+      tappable = true;
     } else if ('path' in item) { // GitHubCode
       title = item.name;
       detail = `${item.path} in ${item.repository.full_name}`;
+      tappable = true;
+    }
+
+    if (searchType === SearchType.ISSUES && 'title' in item && !('merged_at' in item) && !('pull_request' in item && (item as any).pull_request) ) { 
+      tappable = true;
     }
 
     return (
       <TouchableOpacity
         style={styles.repoItem}
         onPress={() => {
-          if (tappable && 'full_name' in item) {
+          if ('full_name' in item) { // GitHubRepo
             navigation.navigate('RepoDetail', { repo: item as GitHubRepo });
+          } else if ('path' in item) { // GitHubCode
+            navigation.navigate('CodeDetail', { code: item as GitHubCode });
+          } else if ('title' in item) { // Could be Issue or PR
+            if ('merged_at' in item || 'diff_url' in item || (item as any).head?.repo) { // Heuristic for PR
+              navigation.navigate('PRDetail', { pr: item as GitHubPR });
+            } else { // Assumed to be an Issue
+              navigation.navigate('IssueDetail', { issue: item as GitHubIssue });
+            }
           }
         }}
         disabled={!tappable}
@@ -180,7 +202,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         value={query}
         onChangeText={setQuery}
         returnKeyType="search"
-        onSubmitEditing={handleSearch}
+      />
+      <Button
+        title="Search"
+        onPress={handleSearch}
+        disabled={loading}
       />
       {loading && page === 1 && results.length === 0 ? (
         <ActivityIndicator size="large" color="#000" />
