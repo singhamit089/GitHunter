@@ -1,21 +1,25 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import HomeScreen from '@screens/HomeScreen';
-import RepoDetailScreen from '@screens/RepoDetailScreen';
-import IssueDetailScreen from './src/screens/IssueDetailScreen';
-import PRDetailScreen from './src/screens/PRDetailScreen';
-import CodeDetailScreen from './src/screens/CodeDetailScreen';
-import { GitHubRepo, GitHubIssue, GitHubPR, GitHubCode } from './src/models';
+import HomeScreen from './screens/HomeScreen';
+import RepoDetailScreen from './screens/RepoDetailScreen';
+import IssueDetailScreen from './screens/IssueDetailScreen';
+import PRDetailScreen from './screens/PRDetailScreen';
+import CodeDetailScreen from './screens/CodeDetailScreen';
+import { GitHubRepo, GitHubIssue, GitHubPR, GitHubCode } from './models';
 
 export type RootStackParamList = {
   Home: undefined;
-  RepoDetail: { repo: GitHubRepo }; 
-  IssueDetail: { issue: GitHubIssue }; 
-  PRDetail: { pr: GitHubPR }; 
-  CodeDetail: { code: GitHubCode }; 
+  RepoDetail: { repo: GitHubRepo };
+  IssueDetail: { issue: GitHubIssue };
+  PRDetail: { pr: GitHubPR };
+  CodeDetail: { code: GitHubCode };
 };
+
+export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,7 +29,9 @@ const App = () => {
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
-          headerStyle: { backgroundColor: '#24292e' },
+          headerStyle: { 
+            backgroundColor: Platform.OS === 'web' ? '#24292e' : '#24292e',
+          },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
         }}

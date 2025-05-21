@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../App'; // Assuming App.tsx is two levels up
+import { RootStackParamList } from '../App';
 import { GitHubCode } from '../models'; // Assuming models are one level up then into models
 
 type CodeDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'CodeDetail'>;

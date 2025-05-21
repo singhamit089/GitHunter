@@ -2,8 +2,14 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
+import { AppRegistry, Platform } from 'react-native';
+import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => App);
+if (Platform.OS === 'web') {
+  // For web, we use the src/index.js entry point
+  require('./src/index');
+} else {
+  // For native platforms, we use the AppRegistry
+  const App = require('./src/App').default;
+  AppRegistry.registerComponent(appName, () => App);
+}

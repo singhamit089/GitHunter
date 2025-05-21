@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../App'; // Assuming App.tsx is two levels up
+import { RootStackParamList } from '../App';
 import { GitHubIssue } from '../models'; // Assuming models are one level up then into models
 
 type IssueDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'IssueDetail'>;
