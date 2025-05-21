@@ -12,4 +12,10 @@ export interface GitHubIssue {
   updated_at: string;
   repository_url: string; // To get repository information if needed
   number: number;
+  body?: string;
+  labels?: Array<{
+    id: number;
+    name: string;
+    color: string;
+  }>;
 }

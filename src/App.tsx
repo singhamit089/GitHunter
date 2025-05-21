@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { TamaguiProvider } from 'tamagui';
+import config from '../tamagui.config';
 
 import HomeScreen from './screens/HomeScreen';
 import RepoDetailScreen from './screens/RepoDetailScreen';
@@ -25,44 +27,46 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerStyle: { 
-            backgroundColor: Platform.OS === 'web' ? '#24292e' : '#24292e',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: { fontWeight: 'bold' },
-        }}
-      >
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: 'GitHub Repository Search' }}
-        />
-        <Stack.Screen
-          name="RepoDetail"
-          component={RepoDetailScreen}
-          options={{ title: 'Repository Details' }}
-        />
-        <Stack.Screen
-          name="IssueDetail"
-          component={IssueDetailScreen}
-          options={{ title: 'Issue Details' }}
-        />
-        <Stack.Screen
-          name="PRDetail"
-          component={PRDetailScreen}
-          options={{ title: 'Pull Request Details' }}
-        />
-        <Stack.Screen
-          name="CodeDetail"
-          component={CodeDetailScreen}
-          options={{ title: 'Code Details' }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <TamaguiProvider config={config}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: { 
+              backgroundColor: Platform.OS === 'web' ? '#24292e' : '#24292e',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: { fontWeight: 'bold' },
+          }}
+        >
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: 'GitHub Repository Search' }}
+          />
+          <Stack.Screen
+            name="RepoDetail"
+            component={RepoDetailScreen}
+            options={{ title: 'Repository Details' }}
+          />
+          <Stack.Screen
+            name="IssueDetail"
+            component={IssueDetailScreen}
+            options={{ title: 'Issue Details' }}
+          />
+          <Stack.Screen
+            name="PRDetail"
+            component={PRDetailScreen}
+            options={{ title: 'Pull Request Details' }}
+          />
+          <Stack.Screen
+            name="CodeDetail"
+            component={CodeDetailScreen}
+            options={{ title: 'Code Details' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </TamaguiProvider>
   );
 };
 
