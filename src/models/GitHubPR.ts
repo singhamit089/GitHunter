@@ -12,4 +12,10 @@ export interface GitHubPR {
   merged_at?: string | null; // PRs may not be merged
   repository_url: string; // To get repository information if needed
   number: number;
+  body?: string;
+  labels?: Array<{
+    id: number;
+    name: string;
+    color: string;
+  }>;
 }

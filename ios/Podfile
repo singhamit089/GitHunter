@@ -1,3 +1,7 @@
+# Add these at the top
+install! 'cocoapods', :deterministic_uuids => false
+use_frameworks! :linkage => :static
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -7,6 +11,9 @@ require Pod::Executable.execute_command('node', ['-p',
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+
+# Add this line
+$RNFirebaseAsStaticFramework = true
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -30,8 +37,15 @@ target 'GitHunter' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
+    
+    # Add these lines to fix Swift module issues
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.1'
+        config.build_settings['SWIFT_VERSION'] = '5.0'
+      end
+    end
   end
 end

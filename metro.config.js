@@ -1,5 +1,6 @@
 const path = require('path');
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const { withTamagui } = require('@tamagui/metro-plugin');
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -15,4 +16,7 @@ const config = {
   watchFolders: [path.resolve(__dirname, 'src')],
 };
 
-module.exports = mergeConfig(defaultConfig, config);
+module.exports = withTamagui(mergeConfig(defaultConfig, config), {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+});
