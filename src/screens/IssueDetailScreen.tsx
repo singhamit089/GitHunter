@@ -1,8 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import { GitHubIssue } from '../models'; // Assuming models are one level up then into models
+import { GitHubIssue } from '../models';
+import {
+  YStack,
+  XStack,
+  Text,
+  H2,
+  Card,
+  Paragraph,
+  Separator,
+} from 'tamagui';
+import { ScrollView } from 'react-native';
 
 type IssueDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'IssueDetail'>;
 
@@ -10,32 +19,60 @@ const IssueDetailScreen: React.FC<IssueDetailScreenProps> = ({ route }) => {
   const { issue } = route.params;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Issue Details</Text>
-      <Text style={styles.info}>Title: {issue.title}</Text>
-      <Text style={styles.info}>Number: #{issue.number}</Text>
-      <Text style={styles.info}>User: {issue.user.login}</Text>
-      <Text style={styles.info}>State: {issue.state}</Text>
-      {/* Add more details as needed */}
-    </View>
+    <ScrollView contentContainerStyle={{ padding: 16 }}>
+      <YStack padding="$4" space="$4">
+        <Card elevate bordered padding="$4">
+          <YStack space="$4">
+            <H2>{issue.title}</H2>
+            
+            <XStack space="$2" alignItems="center">
+              <Text theme="blue">#{issue.number}</Text>
+              <Text>•</Text>
+              <Text>Opened by {issue.user.login}</Text>
+            </XStack>
+
+            <Separator />
+
+            <YStack space="$2">
+              <XStack space="$2">
+                <Text fontWeight="bold">State:</Text>
+                <Text theme={issue.state === 'open' ? 'green' : 'red'}>
+                  {issue.state}
+                </Text>
+              </XStack>
+
+              {issue.body && (
+                <YStack space="$2">
+                  <Text fontWeight="bold">Description:</Text>
+                  <Paragraph>{issue.body}</Paragraph>
+                </YStack>
+              )}
+
+              {issue.labels && issue.labels.length > 0 && (
+                <YStack space="$2">
+                  <Text fontWeight="bold">Labels:</Text>
+                  <XStack flexWrap="wrap" space="$2">
+                    {issue.labels.map((label) => (
+                      <Card
+                        key={label.id}
+                        bordered
+                        padding="$2"
+                        backgroundColor={label.color ? `#${label.color}` : undefined}
+                      >
+                        <Text color={label.color ? 'white' : undefined}>
+                          {label.name}
+                        </Text>
+                      </Card>
+                    ))}
+                  </XStack>
+                </YStack>
+              )}
+            </YStack>
+          </YStack>
+        </Card>
+      </YStack>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  info: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-});
 
 export default IssueDetailScreen;

@@ -2,16 +2,20 @@ module.exports = {
   presets: ['module:@react-native/babel-preset'],
   plugins: [
     [
-      'module-resolver',
+      'babel-plugin-transform-inline-environment-variables',
       {
-        root: ['./src'],
-        extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
-        alias: {
-          '@managers': './src/managers',
-          '@screens': './src/screens',
-          '@models': './src/models'
-        }
-      }
-    ]
-  ]
+        include: ['TAMAGUI_TARGET', 'EXPO_ROUTER_APP_ROOT'],
+      },
+    ],
+    [
+      '@tamagui/babel-plugin',
+      {
+        components: ['tamagui'],
+        config: './tamagui.config.ts',
+        logTimings: true,
+        disableExtraction: process.env.NODE_ENV === 'development',
+      },
+    ],
+    'react-native-reanimated/plugin',
+  ],
 };
