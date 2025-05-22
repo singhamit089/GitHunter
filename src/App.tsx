@@ -5,6 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TamaguiProvider } from 'tamagui';
 import config from '../tamagui.config';
+import { Button } from 'tamagui';
+import { ChevronLeft } from '@tamagui/lucide-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import HomeScreen from './screens/HomeScreen';
 import RepoDetailScreen from './screens/RepoDetailScreen';
@@ -24,6 +27,23 @@ export type RootStackParamList = {
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const CustomBackButton = () => {
+  const navigation = useNavigation();
+  return (
+    <Button
+      size="$2"
+      onPress={() => navigation.navigate('Home')}
+      backgroundColor="#fff"
+      color="#222"
+      marginRight={8}
+      circular
+      style={{ marginLeft: 12 }}
+    >
+      <ChevronLeft size={20} color="#222" />
+    </Button>
+  );
+};
 
 const App = () => {
   return (
@@ -47,22 +67,34 @@ const App = () => {
           <Stack.Screen
             name="RepoDetail"
             component={RepoDetailScreen}
-            options={{ title: 'Repository Details' }}
+            options={{
+              title: 'Repository Details',
+              headerLeft: () => <CustomBackButton />,
+            }}
           />
           <Stack.Screen
             name="IssueDetail"
             component={IssueDetailScreen}
-            options={{ title: 'Issue Details' }}
+            options={{
+              title: 'Issue Details',
+              headerLeft: () => <CustomBackButton />,
+            }}
           />
           <Stack.Screen
             name="PRDetail"
             component={PRDetailScreen}
-            options={{ title: 'Pull Request Details' }}
+            options={{
+              title: 'Pull Request Details',
+              headerLeft: () => <CustomBackButton />,
+            }}
           />
           <Stack.Screen
             name="CodeDetail"
             component={CodeDetailScreen}
-            options={{ title: 'Code Details' }}
+            options={{
+              title: 'Code Details',
+              headerLeft: () => <CustomBackButton />,
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

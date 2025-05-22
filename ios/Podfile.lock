@@ -1065,6 +1065,8 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
+  - RNSVG (15.12.0):
+    - React-Core
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -1122,6 +1124,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1232,6 +1235,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1288,6 +1293,7 @@ SPEC CHECKSUMS:
   ReactCommon: dcc65c813041388dead6c8b477444757425ce961
   RNReanimated: 9fc2b08ed365d7dc451bc451605d89c01f2c935b
   RNScreens: cdb3e3c80b0bba30e3c6b9f398967d66d63e4e9e
+  RNSVG: 9325fbf920447630ab816ace9a4dfd9e4fe8c1b9
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 1b901a6d6eeba4e8a2e8f308f708691cdb5db312
 

@@ -14,6 +14,23 @@ const config = {
   module: {
     rules: [
       {
+        test: /\.[jt]sx?$/,
+        include: [
+          path.resolve(__dirname, 'src'),
+          /node_modules[/\\]react-native-/,
+          /node_modules[/\\]@react-native/,
+          /node_modules[/\\]@tamagui/,
+        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            configFile: path.resolve(__dirname, 'babel.config.js'),
+            babelrc: false,
+          },
+        },
+      },
+      {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
